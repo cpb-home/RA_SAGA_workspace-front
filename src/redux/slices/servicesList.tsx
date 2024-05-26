@@ -14,7 +14,7 @@ export const fetchServices = createAsyncThunk(
   async () => {
     return fetch(import.meta.env.VITE_SERVICES_URL)
       .then(res => res.json())
-      //.catch(e => console.log('---'+e+'---'))
+      .catch(e => console.log('---'+e+'---'))
   }
 )
 
@@ -36,11 +36,11 @@ export const servicesListSlice = createSlice({
     .addCase(fetchServices.fulfilled, (state, action) => {
       state.loading = false;
       state.error = '';
-      state.services = action.payload;console.log(action.payload)
+      state.services = action.payload;console.log(action)
     })
     .addCase(fetchServices.rejected, (state, action) => {
       state.loading = false;
-      state.error = action.payload as string;console.log(action.payload)
+      state.error = action.error.message as string;console.log(action)
     })
   }
 });
