@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import servicesList from '../slices/servicesList';
+import service from '../slices/service';
 
 const store = configureStore({
   reducer: {
-    servicesList: servicesList
+    servicesList: servicesList,
+    serviceInfo: service
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware()
 });

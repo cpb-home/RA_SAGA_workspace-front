@@ -11,12 +11,27 @@ const initialState = {
 
 export const fetchServices = createAsyncThunk(
   'servicesList/fetchServices',
-  async () => {
-    return fetch(import.meta.env.VITE_SERVICES_URL)
-      .then(res => res.json())
-      .catch(e => console.log('---'+e+'---'))
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await fetch(import.meta.env.VITE_SERVICES_URL);
+
+      if (!response.ok) {
+        return rejectWithValue('Loading error');
+      }
+
+      return await response.json();
+    } catch (e) {
+      return rejectWithValue(e);
+    }
   }
 )
+
+//console.log(res.status, res)
+        // if (res.status === 500) {
+        //   console.log(res);
+        // } else {
+        //   console.log(res.json())
+        // }
 
 export const servicesListSlice = createSlice({
   name: 'servicesList',
@@ -36,11 +51,11 @@ export const servicesListSlice = createSlice({
     .addCase(fetchServices.fulfilled, (state, action) => {
       state.loading = false;
       state.error = '';
-      state.services = action.payload;console.log(action)
+      state.services = action.payload;
     })
     .addCase(fetchServices.rejected, (state, action) => {
       state.loading = false;
-      state.error = action.error.message as string;console.log(action)
+      state.error = action.error.message as string;
     })
   }
 });
